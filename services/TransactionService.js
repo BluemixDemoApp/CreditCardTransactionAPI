@@ -5,6 +5,7 @@ const TwilioService = require('./TwilioService');
 
 const Q = require('q');
 const _ = require('underscore');
+const env = process.env;
 
 //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //:::                                                                         :::
@@ -77,7 +78,9 @@ exports.create = function(payload) {
 			const distanceBetweenPoints = calculateDistance(transaction.lat, transaction.long, user.lat, user.long, 'K');
 
 			const insertTransaction = function(transaction, status) {
+
 				transaction.status = status;
+				
 				cloudantDB.insert(transaction).then(function(transaction) {
 					deferred.resolve({
 						transactionId: transaction.id,
@@ -91,7 +94,7 @@ exports.create = function(payload) {
 			// 1000 Kilometers
 			if (distanceBetweenPoints >= maxDistance) {
 				status = 'ALERT';
-				TwilioService.sendMessage(user.phone, "THIS IS A TEST MESSAGE").then(function() {
+				TwilioService.sendMessage(user.phone, env.twilio_send_message).then(function() {
 					insertTransaction(transaction, status);
 				}).catch(function(err) {
 					deferred.reject({
