@@ -34,7 +34,7 @@ const _ = require('underscore');
 //:::                                                                         :::
 //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-function distance(lat1, lon1, lat2, lon2, unit) {
+function calculateDistance(lat1, lon1, lat2, lon2, unit) {
 	var radlat1 = Math.PI * lat1/180
 	var radlat2 = Math.PI * lat2/180
 	var theta = lon1-lon2
@@ -74,9 +74,9 @@ exports.create = function(payload) {
 
 			let status = 'OK';
 			const maxDistance = 1000; // Kilometers
-			const distanceBetweenPoints = distance(transaction.lat, transaction.long, user.lat, user.long, 'K');
+			const distanceBetweenPoints = calculateDistance(transaction.lat, transaction.long, user.lat, user.long, 'K');
 
-			const insertTransaction = function(transaction) {
+			const insertTransaction = function(transaction, status) {
 				cloudantDB.insert(transaction).then(function(transaction) {
 					deferred.resolve({
 						transactionId: transaction.id,
@@ -90,15 +90,15 @@ exports.create = function(payload) {
 			// 1000 Kilometers
 			if (distanceBetweenPoints >= maxDistance) {
 				status = 'ALERT';
-				TwilioService.sendMessage(user.phone, "THIS IS A MESSAGE").then(function() {
-					insertTransaction(transaction);
+				TwilioService.sendMessage(user.phone, "THIS IS A TEST MESSAGE").then(function() {
+					insertTransaction(transaction, status);
 				}).catch(function(err) {
 					deferred.reject({
 						error: 'Could not send Twilio SMS message: ' + err
 					});
 				});
 			} else {
-				insertTransaction(transaction);
+				insertTransaction(transaction, status);
 			}
 
 		} else {
