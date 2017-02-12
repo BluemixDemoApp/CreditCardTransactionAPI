@@ -16,6 +16,7 @@ app.controller('TransactionAppCtrl', function ($scope, $q, API) {
         $scope.arrayList = transactions;
     });
 
+/*
     $scope.$watch('arrayList', function () {
 
         console.log("watch ping");
@@ -31,7 +32,7 @@ app.controller('TransactionAppCtrl', function ($scope, $q, API) {
                 document.getElementById('transactionButton').setAttribute('disabled', true);
             }
         })
-    }, true)
+    }, true)*/
 
     $scope.makeTransaction = function () {
         console.log("transaction made", place);
@@ -67,7 +68,7 @@ app.controller('TransactionAppCtrl', function ($scope, $q, API) {
 
     setTimeout(function () {
         initAutocomplete();
-    }, 123);
+    }, 100);
 
     function fillInAddress() {
         // Get the place details from the autocomplete object.
