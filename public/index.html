@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="css/app.css">
 </head>
 
-<body ng-app="MyApp">
-    <div ng-controller="MyCtrl" class="container outerBox">
+<body ng-app="TransactionApp">
+    <div ng-controller="TransactionAppCtrl" class="container outerBox">
         <div class="innerBox">
             <h1></h1>
             <form>
@@ -31,44 +31,18 @@
     <!--Angular Scripts-->
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-route.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-resource.js"></script>
+
     <!--Bootstrap Features-->
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
     <!--Your Scripts-->
-     <script src="https://maps.googleapis.com/maps/api/js?libraries=places" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places" async defer></script>
     <script src="js/app.js"></script>
-
-        <script>
-      // This example displays an address form, using the autocomplete feature
-      // of the Google Places API to help users fill in the information.
-
-      // This example requires the Places library. Include the libraries=places
-      // parameter when you first load the API. For example:
-      // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
-
-    //   var autocomplete;
-
-    //   function initAutocomplete() {
-    //       console.log("hi cam");
-    //     // Create the autocomplete object, restricting the search to geographical
-    //     // location types.
-    //     autocomplete = new google.maps.places.Autocomplete(
-    //         /** @type {!HTMLInputElement} */(document.getElementById('autocomplete')),
-    //         {types: ['geocode']});
-
-    //     // When the user selects an address from the dropdown, populate the address
-    //     // fields in the form.
-    //     autocomplete.addListener('place_changed', fillInAddress);
-    //   }
-
-    //   function fillInAddress() {
-    //     // Get the place details from the autocomplete object.
-    //     var place = autocomplete.getPlace();
-    //     console.log(place);
-    //   }
-
-    </script>
-   
+    <script src="js/config.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/controller.js"></script>
 
 </body>
 
