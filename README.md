@@ -7,6 +7,7 @@ https://www.ibm.com/support/knowledgecenter/en/SSTPQH_1.0.0/com.ibm.cloudant.loc
 
 ```
 	> git clone git@github.com:BluemixDemoApp/CreditCardTransactionAPI.git
+	> cd CreditCardTransactionAPI
 	> touch .env
     > echo "cloudant_username=${MY_USER}" >>  .env     
     > echo "cloudant_password='${MY_PASSWORD}'"  >> .env   
