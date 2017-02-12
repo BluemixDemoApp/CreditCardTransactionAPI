@@ -1,0 +1,17 @@
+{
+  "name": "Server",
+  "description": "",
+  "main": "app.js",
+  "authors": [
+    "Cam Beaudoin <camilebeaudoin@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/BluemixDemoApp/CreditCardTransactionAPI",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

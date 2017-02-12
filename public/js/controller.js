@@ -1,118 +1,91 @@
-app.controller('TransactionAppCtrl', function ($scope, API) {
+app.controller('TransactionAppCtrl', function ($scope, $q, API) {
 
-        /* Dani Magic */
-        API.getTransactions({
-            userId: "b09de84e43e5892f27e44eb6e8bf3ae0"
-        }).$promise.then(function(transaction) {
-            console.log("getTransactions: ", transaction);
-        });
+    var place;
+    var autocomplete;
+    var lat;
+    var long;
 
-        API.createTransaction( {
-            userId: "b09de84e43e5892f27e44eb6e8bf3ae0",
-            lat: 123,
-            long: 321,
-            address: "This is a test address"
-        }).$promise.then(function(transaction) {
-            console.log("createTransaction: ", transaction);
-        });
+    $scope.arrayList = [];
+    $scope.inputContent = '';
 
-        API.checkTransaction({
-            transactionId: "66b907f33c3326578314976096ab0076"
-        }).$promise.then(function(transaction) {
-            console.log("checkTransaction: ", transaction);
-        });
+    /* Dani Magic */
+    API.getTransactions({
+        userId: "b09de84e43e5892f27e44eb6e8bf3ae0"
+    }).$promise.then(function (transactions) {
+        console.log("getTransactions: ", transactions);
+        $scope.arrayList = transactions;
+    });
 
-        $scope.inputContent = '';
-        $scope.arrayList = [{
-                status: 'OK',
-                transactionId: Math.floor(Math.random() * 100),
-                address: {
-                    lat: 1.89768,
-                    long: 0.467126
-                }
-            },
-            {
-                status: 'OK',
-                transactionId: Math.floor(Math.random() * 100),
-                address: {
-                    lat: 1.89768,
-                    long: 0.467126
-                }
-            },
-            {
-                status: 'OK',
-                transactionId: Math.floor(Math.random() * 100),
-                address: {
-                    lat: 1.89768,
-                    long: 0.467126
-                }
-            }
-        ];
+    $scope.$watch('arrayList', function () {
 
-        var place;
+        console.log("watch ping");
+        $scope.arrayList.forEach(function (item) {
+            if (item.status === 'ALERT') {
 
-        $scope.$watch('arrayList', function () {
-            console.log("watch ping");
-            $scope.arrayList.forEach(function (item) {
-                if (item.status === 'ALERT') {
-                    document.getElementById('transactionButton').setAttribute('disabled', true);
-                }
-            })
-        }, true)
-
-        $scope.makeTransaction = function () {
-            console.log("transaction made", $scope.arrayList);
-
-            // var place = autocomplete.getPlace();
-            console.log(place);
-            var payload = {
-                // userId: req.body.userId,  // TODO: implement later
-                lat: place.geometry.location.lat(),
-                long: place.geometry.location.lng(),
-                address: place.formatted_address
-            }
-                console.log(payload);
-
-
-            // URL: /api/createTransaction ---> POST
-            setTimeout(function () {
-
-                $scope.arrayList.push({
-                    status: 'OK',
-                    transactionId: Math.floor(Math.random() * 100),
-                    lat: payload.lat,
-                    long: payload.long,
-                    address: payload.address
-                })
-            }, 500);
-            $scope.inputContent = '';
-        }
-
-        var autocomplete;
-
-        function initAutocomplete() {
-            console.log("hi cam");
-            // Create the autocomplete object, restricting the search to geographical
-            // location types.
-            autocomplete = new google.maps.places.Autocomplete(
-                /** @type {!HTMLInputElement} */
-                (document.getElementById('autocomplete')), {
-                    types: ['geocode']
+                API.checkTransaction({
+                    transactionId: "66b907f33c3326578314976096ab0076"
+                }).$promise.then(function (transaction) {
+                    console.log("checkTransaction: ", transaction);
                 });
 
-            // When the user selects an address from the dropdown, populate the address
-            // fields in the form.
-            autocomplete.addListener('place_changed', fillInAddress);
-        }
+                document.getElementById('transactionButton').setAttribute('disabled', true);
+            }
+        })
+    }, true)
 
-        setTimeout(function () {
-            initAutocomplete();
-        }, 100);
+    $scope.makeTransaction = function () {
+        console.log("transaction made", place);
 
-          function fillInAddress() {
-            // Get the place details from the autocomplete object.
-            place = autocomplete.getPlace();
-            console.log(place);
-          }
+        API.createTransaction({
+            userId: "b09de84e43e5892f27e44eb6e8bf3ae0",
+            lat: lat,
+            long: long,
+            address: place.formatted_address
+        }).$promise.then(function (transaction) {
+            console.log("createTransaction: ", transaction);
+            $scope.arrayList.push({
+                status: transaction.status,
+                transactionId: transaction.transactionId,
+                lat: lat,
+                long: long,
+                address: address
+            })
+        });
 
-    })
+        // var place = autocomplete.getPlace();
+        // console.log(place);
+        // var payload = {
+        //     // userId: req.body.userId,  // TODO: implement later
+        // lat: place.geometry.location.lat(),
+        // long: place.geometry.location.lng(),
+        // address: place.formatted_address
+        // }
+        // console.log(payload);
+
+
+
+        $scope.inputContent = '';
+    }
+
+
+    function initAutocomplete() {
+        autocomplete = new google.maps.places.Autocomplete(
+            /** @type {!HTMLInputElement} */
+            (document.getElementById('autocomplete')), {
+                types: ['geocode']
+            });
+        autocomplete.addListener('place_changed', fillInAddress);
+    }
+
+    setTimeout(function () {
+        initAutocomplete();
+    }, 123);
+
+    function fillInAddress() {
+        // Get the place details from the autocomplete object.
+        place = autocomplete.getPlace();
+        lat = place.geometry.location.lat();
+        long = place.geometry.location.lng();
+    }
+
+})
