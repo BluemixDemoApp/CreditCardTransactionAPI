@@ -10,7 +10,7 @@ app.controller('TransactionAppCtrl', function ($scope, $q, API) {
 
     /* Dani Magic */
     API.getTransactions({
-        userId: "b09de84e43e5892f27e44eb6e8bf3ae0"
+        userId: "1a806da7f44932a9c85d087f2bd01308"
     }).$promise.then(function (transactions) {
         console.log("getTransactions: ", transactions);
         $scope.arrayList = transactions;
