@@ -12,7 +12,6 @@ exports.sendMessage = function(to, message) {
         from: '+1' + env.twilio_phone_number, // A number you bought from Twilio and can use for outbound communication
         body: message
     }).then(function(responseData) {
-        console.log(responseData);
         deferred.resolve(responseData);
     }).fail(function(error) {
         deferred.reject(error);

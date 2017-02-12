@@ -68,7 +68,7 @@ exports.create = function(payload) {
 		return deferred.promise;
 	}
 
-	UserService.get({
+	UserService.getById({
 		userId: transaction.userId
 	}).then(function(user) {
 		if (!_.isNull(user)) {
@@ -80,7 +80,7 @@ exports.create = function(payload) {
 			const insertTransaction = function(transaction, status) {
 
 				transaction.status = status;
-				
+
 				cloudantDB.insert(transaction).then(function(transaction) {
 					deferred.resolve({
 						transactionId: transaction.id,
@@ -181,4 +181,70 @@ exports.getAll = function(payload) {
 	});
 
 	return deferred.promise;
+};
+
+/* Unlock a blocked transaction */
+exports.unlock = function(payload) {
+
+	var deferred = Q.defer();
+
+	const user = {
+		phone: payload.phone
+	};
+
+	console.log("USER PAYLOAD: ", user);
+
+	if (!ValidationService.fieldsAreValid(user)) {
+		deferred.reject({
+			error: "Supply a valid phone number"
+		});
+		return deferred.promise;
+	}
+
+	UserService.getByPhone({
+		phone: user.phone
+	}).then(function(user) {
+
+		console.log("USER: ", user);
+
+		const transactionQuery = {
+			tag: 'Transaction',
+			userId: user._id,
+			status: 'ALERT'
+		};
+
+		console.log("transactionQuery: ", transactionQuery);
+
+		cloudantDB.find({
+			selector: transactionQuery
+		}).then(function(transactions) {
+			console.log("transactions: ", transactions);
+
+			let transaction = transactions.docs.map(function(doc) {
+				doc.status = "OK";
+				return doc;
+			})[0];
+
+			console.log("transactions: ", transactions);
+
+			return cloudantDB.insert(transaction);
+
+		}).then(function(ret) {
+
+			console.log("RET: ", ret);
+
+			deferred.resolve();
+
+		}).catch(function(err) {
+			deferred.reject(err);
+		});
+
+	}).catch(function(err) {
+		deferred.reject({
+			error: 'Unable to unblock transaction: ', err
+		});
+	});
+
+	return deferred.promise;
+
 };

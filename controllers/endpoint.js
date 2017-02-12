@@ -2,8 +2,28 @@
 
 const UserService = require('../services/UserService');
 const TransactionService = require('../services/TransactionService');
+const env = process.env;
 
 // Endpoints
+
+exports.getSMS = function(req, res) {
+
+	console.log("TESTE");
+
+	if (req.query.From === ('+1' + env.twilio_phone_number)) {
+		return res.sendStatus(200);
+	}
+
+	const payload = {
+		phone: req.query.From ? req.query.From.replace('+1', '') : null
+	};
+
+	console.log("PAYLOAD: ", payload);
+
+	TransactionService.unlock(payload).then(function() {
+		res.sendStatus(200);
+	});
+};
 
 exports.createUser = function(req, res) {
 
