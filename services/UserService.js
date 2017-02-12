@@ -16,7 +16,7 @@ exports.get = function(payload) {
 	}).then(function(user) {
 		if (user.docs && user.docs.length === 1) {
 			deferred.resolve(user.docs.map(function(user){
-				user.userId = user._id;
+				user.id = user._id;
 				return user;
 			})[0]);
 		} else {

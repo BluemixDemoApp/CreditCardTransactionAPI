@@ -135,7 +135,7 @@ exports.get = function(payload) {
 	}).then(function(transaction) {
 		if (transaction.docs && transaction.docs.length === 1) {
 			deferred.resolve(transaction.docs.map(function(doc) {
-				doc.transactionId = doc._id;
+				doc.id = doc._id;
 				return doc;
 			})[0]);
 		} else {
@@ -169,7 +169,7 @@ exports.getAll = function(payload) {
 		selector: transaction
 	}).then(function(transactions) {
 		deferred.resolve(transactions.docs.map(function(doc) {
-			doc.transactionId = doc._id;
+			doc.id = doc._id;
 			return doc;
 		}));
 	}).catch(function(err) {
