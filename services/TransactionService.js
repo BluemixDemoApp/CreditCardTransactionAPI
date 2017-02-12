@@ -77,6 +77,7 @@ exports.create = function(payload) {
 			const distanceBetweenPoints = calculateDistance(transaction.lat, transaction.long, user.lat, user.long, 'K');
 
 			const insertTransaction = function(transaction, status) {
+				transaction.status = status;
 				cloudantDB.insert(transaction).then(function(transaction) {
 					deferred.resolve({
 						transactionId: transaction.id,
