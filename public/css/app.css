@@ -1,0 +1,12 @@
+body {
+    background-color: #1A5336;
+}
+
+.outerBox {
+    display: flex;
+    justify-content: center;
+}
+
+.innerBox {
+    width: 700px;
+}
