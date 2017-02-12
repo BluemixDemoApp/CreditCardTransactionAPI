@@ -8,7 +8,7 @@ exports.create = function(payload) {
 
 	const transaction = {
 		tag: 'Transaction',
-		userId: req.body.userId,
+		userId: payload.userId,
 		lat: payload.lat,
 		long: payload.long,
 		address: payload.address
@@ -71,6 +71,8 @@ exports.getAll = function(payload) {
 		tag: 'Transaction',
 		userId: payload.userId
 	};
+
+	console.log(transaction);
 
 	if (!ValidationService.fieldsAreValid(transaction)) {
 		deferred.reject({

@@ -1,7 +1,7 @@
 "use strict";
 
 const UserService = require('../services/UserService');
-const TransactionService = require('../services/UserService');
+const TransactionService = require('../services/TransactionService');
 
 // Endpoints
 
@@ -53,7 +53,7 @@ exports.checkTransaction = function(req, res) {
 exports.getTransactions = function(req, res) {
 
 	const payload = {
-		name: req.params.userId
+		userId: req.params.userId
 	};
 
 	TransactionService.getAll(payload).then(function(ret) {
