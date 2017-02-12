@@ -2,6 +2,30 @@ const cloudantDB = require('./CloudantService').dbConnection;
 const ValidationService = require('./ValidationService');
 const Q = require('q');
 
+exports.get = function(payload) {
+
+	var deferred = Q.defer();
+
+	const user = {
+		tag: 'User',
+		_id: payload.userId
+	};
+
+	cloudantDB.find({
+		selector: user
+	}).then(function(user) {
+		if (user.docs && user.docs.length === 1) {
+			deferred.resolve(user.docs[0]);
+		} else {
+			deferred.resolve(null);
+		}
+	}).catch(function(err) {
+		deferred.reject(err);
+	});
+
+	return deferred.promise;
+};
+
 exports.create = function(payload) {
 
 	var deferred = Q.defer();
