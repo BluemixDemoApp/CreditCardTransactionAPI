@@ -19,7 +19,7 @@ function createDB() {
 const cloudantDB = cloudant.db.use('credit-card-transaction-api');
 
 cloudantDB.list().then(function(data) {
-  console.log('Conencted sucessfully to DB: ', data);
+  console.log('Conected sucessfully to DB');
 }).catch(function(err) {
   console.log('Creating DB!');
   createDB();

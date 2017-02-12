@@ -15,7 +15,10 @@ exports.get = function(payload) {
 		selector: user
 	}).then(function(user) {
 		if (user.docs && user.docs.length === 1) {
-			deferred.resolve(user.docs[0]);
+			deferred.resolve(user.docs.map(function(user){
+				user.userId = user._id;
+				return user;
+			})[0]);
 		} else {
 			deferred.resolve(null);
 		}
