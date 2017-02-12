@@ -37,7 +37,7 @@ app.controller('TransactionAppCtrl', function ($scope, $q, API) {
         console.log("transaction made", place);
 
         API.createTransaction({
-            userId: "b09de84e43e5892f27e44eb6e8bf3ae0",
+            userId: "1a806da7f44932a9c85d087f2bd01308",
             lat: lat,
             long: long,
             address: place.formatted_address
@@ -45,24 +45,12 @@ app.controller('TransactionAppCtrl', function ($scope, $q, API) {
             console.log("createTransaction: ", transaction);
             $scope.arrayList.push({
                 status: transaction.status,
-                transactionId: transaction.transactionId,
-                lat: lat,
-                long: long,
-                address: address
+                id: transaction.transactionId,
+                lat: lat || 0,
+                long: long || 0,
+                address: place.formatted_address || 0
             })
         });
-
-        // var place = autocomplete.getPlace();
-        // console.log(place);
-        // var payload = {
-        //     // userId: req.body.userId,  // TODO: implement later
-        // lat: place.geometry.location.lat(),
-        // long: place.geometry.location.lng(),
-        // address: place.formatted_address
-        // }
-        // console.log(payload);
-
-
 
         $scope.inputContent = '';
     }
@@ -84,8 +72,10 @@ app.controller('TransactionAppCtrl', function ($scope, $q, API) {
     function fillInAddress() {
         // Get the place details from the autocomplete object.
         place = autocomplete.getPlace();
-        lat = place.geometry.location.lat();
-        long = place.geometry.location.lng();
+        setTimeout(function() {
+            lat = place.geometry.location.lat();
+            long = place.geometry.location.lng();
+        },1000)
     }
 
 })
