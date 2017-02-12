@@ -40,7 +40,7 @@ exports.createTransaction = function(req, res) {
 exports.checkTransaction = function(req, res) {
 
 	const payload = {
-		name: req.params.transactionId
+		transactionId: req.params.transactionId
 	};
 
 	TransactionService.get(payload).then(function(ret) {

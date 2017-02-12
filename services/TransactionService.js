@@ -40,7 +40,7 @@ exports.get = function(payload) {
 
 	const transaction = {
 		tag: 'Transaction',
-		id: payload.transactionId
+		_id: payload.transactionId
 	};
 
 	if (!ValidationService.fieldsAreValid(transaction)) {
@@ -50,11 +50,10 @@ exports.get = function(payload) {
 		return deferred.promise;
 	}
 
-	cloudantDB.get(transaction).then(function(transaction) {
-		deferred.resolve({
-			id: transaction.id,
-			status: transaction.status
-		});
+	cloudantDB.find({
+		selector: transaction
+	}).then(function(transaction) {
+		deferred.resolve(transaction.docs[0]);
 	}).catch(function(err) {
 		deferred.reject(err);
 	});
@@ -81,8 +80,10 @@ exports.getAll = function(payload) {
 		return deferred.promise;
 	}
 
-	cloudantDB.get(transaction).then(function(transactions) {
-		deferred.resolve(transactions);
+	cloudantDB.find({
+		selector: transaction
+	}).then(function(transactions) {
+		deferred.resolve(transactions.docs);
 	}).catch(function(err) {
 		deferred.reject(err);
 	});
