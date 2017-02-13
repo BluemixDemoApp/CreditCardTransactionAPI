@@ -9,7 +9,17 @@ app.controller('TransactionAppCtrl', function ($scope, $interval, API) {
     API.getTransactions({
         userId: userId
     }).$promise.then(function (transactions) {
-        $scope.transactions = transactions;
+        // $scope.transactions = transactions;
+
+        $scope.transactions = [{
+            status: "OK",
+            address: "123 fake st",
+            id: "4y3242"
+        }, {
+            status: "ALERT",
+            address: "123 fake st",
+            id: "4y3242"
+        }]
     });
 
     $scope.makeTransaction = function () {
@@ -60,6 +70,6 @@ app.controller('TransactionAppCtrl', function ($scope, $interval, API) {
 
     };
 
-    $interval(checkTransactionsOnAlert, 5000);
+    // $interval(checkTransactionsOnAlert, 5000);
 
 })

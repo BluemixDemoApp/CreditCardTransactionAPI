@@ -20,10 +20,13 @@
                 <button ng-click="makeTransaction()" id="transactionButton" class="btn btn-default">Transaction</button>
             </form><br>
             <ul class="list-group">
-                <li class="list-group-item" ng-repeat="transaction in transactions">
-                    <span>Transaction: {{transaction.id.substring(5,10)}}&nbsp</span>
+                <li class="list-group-item" ng-repeat="transaction in transactions" ng-class="''">
+                    <i ng-if="transaction.status === 'OK'" class="glyphicon glyphicon-ok">&nbsp</i>
+                    <i ng-if="transaction.status === 'ALERT'" class="glyphicon glyphicon-remove">&nbsp</i>
+                    <span>Transaction: {{transaction.id.substring(5,10)}}&nbsp</span> - 
                     <span>Location: {{transaction.address}}</span>
-                    <span class="badge">Status: {{transaction.status}}</span>
+                    <span class="badge">Status: {{transaction.status}}
+                    </span>
                 </li>
             </ul>
         </div>
