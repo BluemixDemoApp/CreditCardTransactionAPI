@@ -229,7 +229,7 @@ exports.unlock = function(payload) {
 
 	}).catch(function(err) {
 		deferred.reject({
-			error: 'Unable to unblock transaction: ', err
+			error: 'Unable to unblock transaction: ' + err
 		});
 	});
 
