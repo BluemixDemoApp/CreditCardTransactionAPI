@@ -6,7 +6,7 @@ module.exports = function(app) {
 
   // Home
   app.get('/', function (req, res){
-      res.sendfile('index.html');
+    res.render('index.html', { title: 'Transaction App' });
   });
 
   app.get('/health', function(req, res) {
