@@ -26,6 +26,6 @@ https://www.ibm.com/support/knowledgecenter/en/SSTPQH_1.0.0/com.ibm.cloudant.loc
     > brew install cf-cli
     > cd CreditCardTransactionAPI
     > cf login -u ${EMAIL} -o ${USERNAME} -s dev // Example: cf login -u cam.beaudoin@ca.ibm.com -o cam.beaudoin -s dev
-    > cf push ${APP_NAME} // Example: demo-app-47356
+    > cf push ${APP_NAME} // Example: cf push demo-app-47356
     > Enjoy!
 ```
