@@ -3,6 +3,7 @@
 
 <head>
     <title>Transaction App</title>
+    <base href="/">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="//bootswatch.com/cosmo/bootstrap.min.css" />
     <link rel="stylesheet" href="/css/libs/autocomplete.min.css">
@@ -17,7 +18,7 @@
                 <div class="form-group">
                     <input type="text" class="form-control" g-places-autocomplete ng-model="address" placeholder="Enter Address"/>
                 </div>
-                <button ng-click="makeTransaction()" id="transactionButton" class="btn btn-default">Transaction</button>
+                <button ng-click="makeTransaction()" ng-disabled="hasTransactionOnAlert()" id="transactionButton" class="btn btn-default">Transaction</button>
             </form><br>
             <ul class="list-group">
                 <li class="list-group-item" ng-repeat="transaction in transactions">

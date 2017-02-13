@@ -1,6 +1,9 @@
-app.controller('TransactionAppCtrl', function ($scope, $interval, API) {
+app.controller('TransactionAppCtrl', function ($scope, $interval, $location, API) {
 
-    var userId = "9cb8da9bf6f311f9c5b8bb58eb0d30f8";
+    var userId = "9cb8da9bf6f311f9c5b8bb58eb0d30f8"; // Defaults to Cam`s Id
+    if ($location.search().userId) {
+        userId = $location.search().userId;
+    }
 
     $scope.transactions = [];
     $scope.address = null;
@@ -11,6 +14,12 @@ app.controller('TransactionAppCtrl', function ($scope, $interval, API) {
     }).$promise.then(function (transactions) {
         $scope.transactions = transactions;
     });
+
+    $scope.hasTransactionOnAlert = function() {
+        return $scope.transactions.some(function(transaction) {
+            return transaction.status === 'ALERT';
+        });
+    };
 
     $scope.makeTransaction = function () {
 
@@ -44,9 +53,6 @@ app.controller('TransactionAppCtrl', function ($scope, $interval, API) {
             API.checkTransaction({
                 transactionId: transactionOnAlert.id
             }).$promise.then(function (transactionRet) {
-
-                console.log("transactionRet: ", transactionRet);
-
                 if (transactionRet.status === 'OK') {
                     $scope.transactions = $scope.transactions.map(function(transaction) {
                         if (transactionRet.id === transaction.id) {
