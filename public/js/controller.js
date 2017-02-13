@@ -1,6 +1,6 @@
 app.controller('TransactionAppCtrl', function ($scope, $interval, API) {
 
-    var userId = "1a806da7f44932a9c85d087f2bd01308";
+    var userId = "9cb8da9bf6f311f9c5b8bb58eb0d30f8";
 
     $scope.transactions = [];
     $scope.address = null;
