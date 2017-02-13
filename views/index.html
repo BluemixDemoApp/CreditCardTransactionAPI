@@ -2,9 +2,10 @@
 <html>
 
 <head>
-    <title>App Name</title>
+    <title>Transaction App</title>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="//bootswatch.com/cosmo/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/libs/autocomplete.min.css">
     <link rel="stylesheet" href="/css/app.css">
 </head>
 
@@ -14,15 +15,15 @@
             <h1></h1>
             <form>
                 <div class="form-group">
-                    <input type="text" class="form-control" ng-model="inputContent" id="autocomplete" placeholder="Enter Address">
+                    <input type="text" class="form-control" g-places-autocomplete ng-model="address" placeholder="Enter Address"/>
                 </div>
                 <button ng-click="makeTransaction()" id="transactionButton" class="btn btn-default">Transaction</button>
             </form><br>
             <ul class="list-group">
-                <li class="list-group-item" ng-repeat="item in arrayList">
-                    <span>Transaction: {{item.id.substring(5,10)}}&nbsp</span>
-                    <span>Location: {{item.address}}</span>
-                    <span class="badge">Status: {{item.status}}</span>
+                <li class="list-group-item" ng-repeat="transaction in transactions">
+                    <span>Transaction: {{transaction.id.substring(5,10)}}&nbsp</span>
+                    <span>Location: {{transaction.address}}</span>
+                    <span class="badge">Status: {{transaction.status}}</span>
                 </li>
             </ul>
         </div>
@@ -38,7 +39,8 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     <!--Your Scripts-->
-    <script src="https://maps.googleapis.com/maps/api/js?libraries=places" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
+    <script src="/js/libs/autocomplete.min.js"></script>
     <script src="/js/app.js"></script>
     <script src="/js/config.js"></script>
     <script src="/js/services.js"></script>

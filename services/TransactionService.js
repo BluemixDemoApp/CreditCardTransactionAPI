@@ -83,7 +83,7 @@ exports.create = function(payload) {
 
 				cloudantDB.insert(transaction).then(function(transaction) {
 					deferred.resolve({
-						transactionId: transaction.id,
+						id: transaction.id,
 						status: status
 					});
 				}).catch(function(err) {

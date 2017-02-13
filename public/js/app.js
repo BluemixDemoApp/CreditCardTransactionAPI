@@ -1,1 +1,1 @@
-var app = angular.module('TransactionApp', ['ngResource']);
+var app = angular.module('TransactionApp', ['ngResource', 'google.places']);
