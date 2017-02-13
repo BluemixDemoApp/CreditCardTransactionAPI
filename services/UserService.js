@@ -8,7 +8,7 @@ exports.getByPhone = function(payload) {
 
 	const user = {
 		tag: 'User',
-		phone: payload.phone
+		phone: Number(payload.phone)
 	};
 
 	cloudantDB.find({
