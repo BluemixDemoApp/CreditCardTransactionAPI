@@ -75,10 +75,22 @@ exports.create = function(payload) {
 		return deferred.promise;
 	}
 
-	cloudantDB.insert(user).then(function(user) {
-		deferred.resolve({
-			userId: user.id
-		});
+	exports.getByPhone({
+		phone: Number(user.phone)
+	}).then(function(ret) {
+		if (ret === null) {
+			cloudantDB.insert(user).then(function(user) {
+				deferred.resolve({
+					userId: user.id
+				});
+			}).catch(function(err) {
+				deferred.reject(err);
+			});
+		} else {
+			deferred.reject({
+				error: "Phone already in use!"
+			});
+		}
 	}).catch(function(err) {
 		deferred.reject(err);
 	});
