@@ -66,6 +66,6 @@ app.controller('TransactionAppCtrl', function ($scope, $interval, $location, API
 
     };
 
-    $interval(checkTransactionsOnAlert, 10000);
+    $interval(checkTransactionsOnAlert, 5000);
 
 })
