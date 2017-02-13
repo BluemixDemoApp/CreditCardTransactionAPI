@@ -3,6 +3,10 @@ applications:
   memory: 512M
   instances: 1
   domain: mybluemix.net
-  name: CCtransactions
-  host: CCtransactions
+  name: demo-app-47356
+  host: demo-app-47356
   disk_quota: 1024M
+  services:
+  - demo-app-47356-cloudantNoSQLDB
+  - Twilio-rp
+  - availability-monitoring-auto
