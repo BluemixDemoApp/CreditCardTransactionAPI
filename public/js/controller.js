@@ -12,17 +12,7 @@ app.controller('TransactionAppCtrl', function ($scope, $interval, $location, API
     API.getTransactions({
         userId: userId
     }).$promise.then(function (transactions) {
-        // $scope.transactions = transactions;
-
-        $scope.transactions = [{
-            status: "OK",
-            address: "123 fake st",
-            id: "4y3242"
-        }, {
-            status: "ALERT",
-            address: "123 fake st",
-            id: "4y3242"
-        }]
+        $scope.transactions = transactions;
     });
 
     $scope.hasTransactionOnAlert = function() {
