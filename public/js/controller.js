@@ -42,7 +42,7 @@ app.controller('TransactionAppCtrl', function ($scope, $interval, $location, API
         });
     };
 
-    // Check every 5 minutes for a new status on the "ALERT" transaction
+    // Check every 10 seconds for a new status on the "ALERT" transaction
     var checkTransactionsOnAlert = function() {
         var transactionOnAlert = $scope.transactions.find(function(transaction) {
             return transaction.status === 'ALERT';
@@ -66,6 +66,6 @@ app.controller('TransactionAppCtrl', function ($scope, $interval, $location, API
 
     };
 
-    // $interval(checkTransactionsOnAlert, 5000);
+    $interval(checkTransactionsOnAlert, 10000);
 
 })
