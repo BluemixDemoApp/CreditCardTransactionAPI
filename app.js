@@ -19,7 +19,7 @@ const errorHandler = require('errorhandler');
 const accessLogStream = fs.createWriteStream(__dirname + '/access.log',{flags: 'a'});
 
 // App Setup - middleware
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 3001);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
@@ -30,7 +30,6 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.use(methodOverride());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/css', express.static(path.join(__dirname, '/views/css')));
 app.use(cors()); // accept all requests
 
 // development only

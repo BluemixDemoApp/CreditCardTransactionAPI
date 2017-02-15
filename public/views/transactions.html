@@ -1,0 +1,25 @@
+<div ng-controller="TransactionAppCtrl" class="container outerBox" id="transactionApp">
+    <div class="innerBox">
+        <h1>Transaction Ledger</h1>
+        <form>
+            <div class="form-group">
+                <label for="transactionLocation">Transaction Location</label>
+                <input id="transactionLocation" type="text" class="form-control" g-places-autocomplete ng-model="address" placeholder="Enter Address"
+                />
+            </div>
+            <button ng-click="makeTransaction()" ng-disabled="hasTransactionOnAlert()" id="transactionButton" class="btn btn-default">Transaction</button>
+            <button ng-click="changeUser()" id="transactionButton" class="btn btn-default">Change User</button>
+        </form><br>
+        <ul class="list-group">
+            <li class="list-group-item" ng-repeat="transaction in transactions">
+                <i ng-if="transaction.status === 'OK'" class="glyphicon glyphicon-ok">&nbsp</i>
+                <i ng-if="transaction.status === 'ALERT'" class="glyphicon glyphicon-remove">&nbsp</i>
+                <span>Transaction: {{transaction.id.substring(5,10)}}&nbsp</span> -
+                <span>Location: {{transaction.address}}</span>
+                <span class="badge">Status: {{transaction.status}}
+                </span>
+            </li>
+            <li class="list-group-item" ng-hide="transactions.length">No Transactions</li>
+        </ul>
+    </div>
+</div>

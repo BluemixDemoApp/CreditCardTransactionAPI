@@ -4,11 +4,6 @@ const Endpoint = require('./controllers/endpoint');
 
 module.exports = function(app) {
 
-  // Home
-  app.get('/', function (req, res){
-    res.render('index.html', { title: 'Transaction App' });
-  });
-
   app.get('/health', function(req, res) {
     return res.sendStatus(200);
   });
@@ -20,4 +15,10 @@ module.exports = function(app) {
   app.get('/getUsers', Endpoint.getUsers); 
 
   app.get('/sms', Endpoint.getSMS); 
+
+  // Home (default url in case of error)
+  app.get('*', function(req, res) {
+    res.render('index.html', { title: 'Transaction App' });
+  }); 
+
 };

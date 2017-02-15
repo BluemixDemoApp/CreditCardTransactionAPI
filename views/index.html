@@ -11,60 +11,8 @@
 </head>
 
 <body ng-app="TransactionApp">
-    <div ng-controller="LoginAppCtrl" class="container outerBox" id="loginApp" ng-hide="loggedIn">
-        <div class="innerBox">
-            <h1>Create/Load User</h1>
-            <form name="createLoadUser">
-                <div class="form-group">
-                    <label for="userName">User's Name</label>
-                    <input id="userName" type="text" class="form-control" ng-model="name" placeholder="Enter Name" required />
-                </div>
-                <div class="form-group">
-                    <label for="userPhone">User's Phone Number</label>
-                    <input id="userPhone" type="tel" class="form-control" ng-model="phone" placeholder="ex: 6475551388" required />
-                </div>
-                <div class="form-group">
-                    <label for="homeLocation">Home Location</label>
-                    <input id="homeLocation" type="text" class="form-control" g-places-autocomplete ng-model="address" placeholder="Enter Address"
-                        required />
-                </div>
-                <button ng-click="submitUser()" class="btn btn-default" ng-disabled="!createLoadUser.$valid">Submit</button>
-                <button ng-click="clearUser()" class="btn btn-default">Clear</button>
-            </form><br>
-            <ul class="list-group">
-                <li class="list-group-item loginUser" ng-repeat="user in userList" ng-click="loginUser(user.id)">
-                    <span>Name: {{user.name}}&nbsp</span> -
-                    <span>Phone: {{user.phone}}</span>
-                </li>
-                <li class="list-group-item" ng-hide="userList.length">No Users</li>
-            </ul>
-        </div>
-    </div>
-    <div ng-controller="TransactionAppCtrl" class="container outerBox" id="transactionApp" ng-show="loggedIn">
-        <div class="innerBox">
-            <h1>Transaction Ledger</h1>
-            <form>
-                <div class="form-group">
-                    <label for="transactionLocation">Transaction Location</label>
-                    <input id="transactionLocation" type="text" class="form-control" g-places-autocomplete ng-model="address" placeholder="Enter Address"
-                    />
-                </div>
-                <button ng-click="makeTransaction()" ng-disabled="hasTransactionOnAlert()" id="transactionButton" class="btn btn-default">Transaction</button>
-                <button ng-click="changeUser()" id="transactionButton" class="btn btn-default">Change User</button>
-            </form><br>
-            <ul class="list-group">
-                <li class="list-group-item" ng-repeat="transaction in transactions">
-                    <i ng-if="transaction.status === 'OK'" class="glyphicon glyphicon-ok">&nbsp</i>
-                    <i ng-if="transaction.status === 'ALERT'" class="glyphicon glyphicon-remove">&nbsp</i>
-                    <span>Transaction: {{transaction.id.substring(5,10)}}&nbsp</span> -
-                    <span>Location: {{transaction.address}}</span>
-                    <span class="badge">Status: {{transaction.status}}
-                    </span>
-                </li>
-                <li class="list-group-item" ng-hide="transactions.length">No Transactions</li>
-            </ul>
-        </div>
-    </div>
+    <div ng-view></div>
+    
     <!--Angular Scripts-->
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-route.min.js"></script>
@@ -78,7 +26,8 @@
     <script src="/js/app.js"></script>
     <script src="/js/config.js"></script>
     <script src="/js/services.js"></script>
-    <script src="/js/controller.js"></script>
+    <script src="/js/login-controller.js"></script>
+    <script src="/js/transaction-controller.js"></script>
 </body>
 
 </html>

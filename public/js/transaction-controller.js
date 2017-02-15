@@ -1,24 +1,17 @@
-app.controller('TransactionAppCtrl', function ($scope, $interval, $rootScope, API) {
+app.controller('TransactionAppCtrl', function ($scope, $interval, $location, API) {
 
-    var userId = null;
+    var userId = $location.search().userId;
 
     $scope.transactions = [];
     $scope.address = null;
-    $scope.loggedIn = false;
 
-    $scope.$on('loginState', function (event, state) {
-        $scope.loggedIn = state.loggedIn;
-        if (state.loggedIn) {
-            userId = $rootScope.user;
-            $scope.loggedIn = true;
-
-            API.getTransactions({
-                userId: userId
-            }).$promise.then(function (transactions) {
-                $scope.transactions = transactions;
-            });
-        }
-    })
+    if (userId) {
+        API.getTransactions({
+            userId: userId
+        }).$promise.then(function (transactions) {
+            $scope.transactions = transactions;
+        });
+    }
 
     $scope.hasTransactionOnAlert = function () {
         return $scope.transactions.some(function (transaction) {
@@ -45,11 +38,8 @@ app.controller('TransactionAppCtrl', function ($scope, $interval, $rootScope, AP
     };
 
     $scope.changeUser = function () {
-        $rootScope.user = null;
-        $rootScope.$broadcast('loginState', {
-            loggedIn: false
-        });
-    }
+        $location.path('/');
+    };
 
     // Check every 5 seconds for a new status on the "ALERT" transaction
     var checkTransactionsOnAlert = function () {
@@ -73,51 +63,4 @@ app.controller('TransactionAppCtrl', function ($scope, $interval, $rootScope, AP
         }
     };
     $interval(checkTransactionsOnAlert, 5000);
-})
-
-app.controller('LoginAppCtrl', function ($scope, $rootScope, API) {
-
-    $scope.loggedIn = false;
-    $scope.userList = null;
-
-    function clearUserScope() {
-        $scope.name = "";
-        $scope.phone = null;
-        $scope.address = null;
-    }
-    clearUserScope();
-
-    API.getUsers().$promise.then(function (userArray) {
-        $scope.userList = userArray;
-    })
-
-    $scope.$on('loginState', function (event, state) {
-        $scope.loggedIn = state.loggedIn;
-    })
-
-    $scope.loginUser = function (userId) {
-        $rootScope.user = userId;
-        $rootScope.$broadcast('loginState', {
-            loggedIn: true
-        });
-    }
-
-    $scope.submitUser = function () {
-        API.createUser({
-            name: $scope.name,
-            phone: $scope.phone,
-            lat: $scope.address.geometry.location.lat(),
-            long: $scope.address.geometry.location.lng(),
-        }).$promise.then(function (userRet) {
-            $rootScope.user = userRet.userId;
-            $rootScope.$broadcast('loginState', {
-                loggedIn: true
-            });
-            clearUserScope();
-        })
-    }
-
-    $scope.clearUser = function () {
-        clearUserScope();
-    }
-})
+});
