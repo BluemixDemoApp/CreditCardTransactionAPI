@@ -65,17 +65,10 @@ exports.getAll = function() {
 		tag: 'User'
 	};
 
-	if (!ValidationService.fieldsAreValid(users)) {
-		deferred.reject({
-			error: "Invalid Users"
-		});
-		return deferred.promise;
-	}
-
 	cloudantDB.find({
 		selector: users
-	}).then(function(userList) {
-		deferred.resolve(userList.docs.map(function(doc) {
+	}).then(function(users) {
+		deferred.resolve(users.docs.map(function(doc) {
 			doc.id = doc._id;
 			return doc;
 		}));
