@@ -7,12 +7,21 @@ const env = process.env;
 // Endpoints
 
 exports.getSMS = function(req, res) {
-	if (req.query.From === ('+1' + env.twilio_phone_number)) {
+
+	console.log("Twilio Webhook: ", req.query);
+
+	// Phone number used to dispatch the message
+	const twilioPhoneNumber = '+1' + env.twilio_phone_number;
+
+	if (req.query.From === twilioPhoneNumber) {
 		return res.sendStatus(200);
 	}
 
+	const message = req.query.Body ? req.query.Body : null;
+
 	const payload = {
-		phone: req.query.From ? req.query.From.replace('+1', '') : null
+		phone: req.query.From ? req.query.From.replace('+1', '') : null,
+		message: message
 	};
 
 	TransactionService.unlock(payload).then(function() {

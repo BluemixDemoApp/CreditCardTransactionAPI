@@ -189,7 +189,8 @@ exports.unlock = function(payload) {
 	var deferred = Q.defer();
 
 	const user = {
-		phone: payload.phone
+		phone: payload.phone,
+		message: payload.message
 	};
 
 	if (!ValidationService.fieldsAreValid(user)) {
@@ -213,12 +214,15 @@ exports.unlock = function(payload) {
 			selector: transactionQuery
 		}).then(function(transactions) {
 
-			let transaction = transactions.docs.map(function(doc) {
-				doc.status = "OK";
-				return doc;
-			})[0];
+			let transaction = transactions.docs[0];
 
-			return cloudantDB.insert(transaction);
+			if (payload.message === env.twilio_unlock_code) {
+				transaction.status = 'OK';
+				return cloudantDB.insert(transaction);
+			} else {
+				TwilioService.sendMessage(payload.phone, env.twilio_incorrect_unlock_code_message);
+				return;
+			}
 
 		}).then(function(ret) {
 			deferred.resolve();

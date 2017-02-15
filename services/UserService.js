@@ -86,7 +86,7 @@ exports.create = function(payload) {
 	const user = {
 		tag: 'User',
 		name: payload.name,
-		phone: payload.phone,
+		phone: Number(payload.phone),
 		lat: payload.lat,
 		long: payload.long
 	};
