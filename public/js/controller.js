@@ -6,10 +6,9 @@ app.controller('TransactionAppCtrl', function ($scope, $interval, $rootScope, AP
     $scope.address = null;
     $scope.loggedIn = false;
 
-    // Get an initial list of transactions
-
-    $rootScope.$watch('user', function() {
-        if($rootScope.user) {
+    $scope.$on('loginState', function (event, state) {
+        $scope.loggedIn = state.loggedIn;
+        if (state.loggedIn) {
             userId = $rootScope.user;
             $scope.loggedIn = true;
 
@@ -21,8 +20,8 @@ app.controller('TransactionAppCtrl', function ($scope, $interval, $rootScope, AP
         }
     })
 
-    $scope.hasTransactionOnAlert = function() {
-        return $scope.transactions.some(function(transaction) {
+    $scope.hasTransactionOnAlert = function () {
+        return $scope.transactions.some(function (transaction) {
             return transaction.status === 'ALERT';
         });
     };
@@ -45,18 +44,25 @@ app.controller('TransactionAppCtrl', function ($scope, $interval, $rootScope, AP
         });
     };
 
+    $scope.changeUser = function () {
+        $rootScope.user = null;
+        $rootScope.$broadcast('loginState', {
+            loggedIn: false
+        });
+    }
+
     // Check every 5 seconds for a new status on the "ALERT" transaction
-    var checkTransactionsOnAlert = function() {
-        var transactionOnAlert = $scope.transactions.find(function(transaction) {
+    var checkTransactionsOnAlert = function () {
+        var transactionOnAlert = $scope.transactions.find(function (transaction) {
             return transaction.status === 'ALERT';
         });
-        
+
         if (transactionOnAlert && transactionOnAlert.id) {
             API.checkTransaction({
                 transactionId: transactionOnAlert.id
             }).$promise.then(function (transactionRet) {
                 if (transactionRet.status === 'OK') {
-                    $scope.transactions = $scope.transactions.map(function(transaction) {
+                    $scope.transactions = $scope.transactions.map(function (transaction) {
                         if (transactionRet.id === transaction.id) {
                             return transactionRet;
                         }
@@ -69,7 +75,7 @@ app.controller('TransactionAppCtrl', function ($scope, $interval, $rootScope, AP
     $interval(checkTransactionsOnAlert, 5000);
 })
 
-app.controller('LoginAppCtrl', function($scope, $rootScope, API) {
+app.controller('LoginAppCtrl', function ($scope, $rootScope, API) {
 
     $scope.name = "";
     $scope.phone = null;
@@ -77,16 +83,22 @@ app.controller('LoginAppCtrl', function($scope, $rootScope, API) {
     $scope.loggedIn = false;
     $scope.userList = null;
 
-    API.getUsers().$promise.then(function(userArray) {
+    API.getUsers().$promise.then(function (userArray) {
         $scope.userList = userArray;
     })
 
-    $scope.loginUser = function(userId) {
+    $scope.$on('loginState', function (event, state) {
+        $scope.loggedIn = state.loggedIn;
+    })
+
+    $scope.loginUser = function (userId) {
         $rootScope.user = userId;
-        $scope.loggedIn = true;
+        $rootScope.$broadcast('loginState', {
+            loggedIn: true
+        });
     }
 
-    $scope.submitUser = function() {
+    $scope.submitUser = function () {
         API.createUser({
             name: $scope.name,
             phone: $scope.phone,
@@ -94,7 +106,9 @@ app.controller('LoginAppCtrl', function($scope, $rootScope, API) {
             long: $scope.address.geometry.location.lng(),
         }).$promise.then(function (userRet) {
             $rootScope.user = userRet.userId;
-            $scope.loggedIn = true;
+            $rootScope.$broadcast('loginState', {
+                loggedIn: true
+            });
         })
     }
 })

@@ -38,8 +38,6 @@ exports.createUser = function(req, res) {
 
 exports.getUsers = function(req, res) {
 
-	console.log(res, req);
-
 	UserService.getAll().then(function(ret) {
 		return res.send(ret);
 	}).catch(function(err) {
