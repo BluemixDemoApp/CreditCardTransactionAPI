@@ -14,7 +14,7 @@
     <div ng-controller="LoginAppCtrl" class="container outerBox" id="loginApp" ng-hide="loggedIn">
         <div class="innerBox">
             <h1>Create/Load User</h1>
-            <form>
+            <form name="createLoadUser">
                 <div class="form-group">
                     <label for="userName">User's Name</label>
                     <input id="userName" type="text" class="form-control" ng-model="name" placeholder="Enter Name" required />
@@ -28,7 +28,8 @@
                     <input id="homeLocation" type="text" class="form-control" g-places-autocomplete ng-model="address" placeholder="Enter Address"
                         required />
                 </div>
-                <button type="submit" ng-click="submitUser()" class="btn btn-default">Submit</button>
+                <button ng-click="submitUser()" class="btn btn-default" ng-disabled="!createLoadUser.$valid">Submit</button>
+                <button ng-click="clearUser()" class="btn btn-default">Clear</button>
             </form><br>
             <ul class="list-group">
                 <li class="list-group-item loginUser" ng-repeat="user in userList" ng-click="loginUser(user.id)">

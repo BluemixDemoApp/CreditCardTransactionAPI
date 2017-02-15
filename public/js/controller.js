@@ -77,11 +77,15 @@ app.controller('TransactionAppCtrl', function ($scope, $interval, $rootScope, AP
 
 app.controller('LoginAppCtrl', function ($scope, $rootScope, API) {
 
-    $scope.name = "";
-    $scope.phone = null;
-    $scope.address = null;
     $scope.loggedIn = false;
     $scope.userList = null;
+
+    function clearUserScope() {
+        $scope.name = "";
+        $scope.phone = null;
+        $scope.address = null;
+    }
+    clearUserScope();
 
     API.getUsers().$promise.then(function (userArray) {
         $scope.userList = userArray;
@@ -109,6 +113,11 @@ app.controller('LoginAppCtrl', function ($scope, $rootScope, API) {
             $rootScope.$broadcast('loginState', {
                 loggedIn: true
             });
+            clearUserScope();
         })
+    }
+
+    $scope.clearUser = function () {
+        clearUserScope();
     }
 })
