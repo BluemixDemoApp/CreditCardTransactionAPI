@@ -14,7 +14,9 @@ https://www.ibm.com/support/knowledgecenter/en/SSTPQH_1.0.0/com.ibm.cloudant.loc
     > echo "twilio_account_sid='${TWILIO_ACCOUNT_SID}'"  >> .env   
     > echo "twilio_auth_token='${TWILIO_AUTH_TOKEN}'"  >> .env   
     > echo "twilio_phone_number='${TWILIO_PHONE_NUMBER}'"  >> .env   
-    > echo "twilio_send_message='${TWILIO_SEND_MESSAGE}'"  >> .env   
+    > echo "twilio_send_message='Credit Card alert, please reply CLEAR!'"  >> .env   
+    > echo "twilio_unlock_code='CLEAR'"  >> .env 
+    > echo "twilio_incorrect_unlock_code_message='Your message did not unlock the transaction, try again!'"  >> .env 
 	> npm install
 	> npm start
 ```
