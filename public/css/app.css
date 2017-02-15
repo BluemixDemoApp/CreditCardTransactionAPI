@@ -10,3 +10,7 @@ body {
 .innerBox {
     width: 700px;
 }
+
+.loginUser {
+    cursor: pointer;
+}

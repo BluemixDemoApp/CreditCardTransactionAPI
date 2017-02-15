@@ -1,19 +1,25 @@
-app.controller('TransactionAppCtrl', function ($scope, $interval, $location, API) {
+app.controller('TransactionAppCtrl', function ($scope, $interval, $rootScope, API) {
 
     var userId = null;
-    if ($location.search().userId) {
-        userId = $location.search().userId;
-    }
 
     $scope.transactions = [];
     $scope.address = null;
+    $scope.loggedIn = false;
 
     // Get an initial list of transactions
-    API.getTransactions({
-        userId: userId
-    }).$promise.then(function (transactions) {
-        $scope.transactions = transactions;
-    });
+
+    $rootScope.$watch('user', function() {
+        if($rootScope.user) {
+            userId = $rootScope.user;
+            $scope.loggedIn = true;
+
+            API.getTransactions({
+                userId: userId
+            }).$promise.then(function (transactions) {
+                $scope.transactions = transactions;
+            });
+        }
+    })
 
     $scope.hasTransactionOnAlert = function() {
         return $scope.transactions.some(function(transaction) {
@@ -22,14 +28,12 @@ app.controller('TransactionAppCtrl', function ($scope, $interval, $location, API
     };
 
     $scope.makeTransaction = function () {
-
         API.createTransaction({
             userId: userId,
             lat: $scope.address.geometry.location.lat(),
             long: $scope.address.geometry.location.lng(),
             address: $scope.address.formatted_address
         }).$promise.then(function (transaction) {
-
             $scope.transactions.push({
                 status: transaction.status,
                 id: transaction.id,
@@ -37,7 +41,6 @@ app.controller('TransactionAppCtrl', function ($scope, $interval, $location, API
                 long: $scope.address.geometry.location.lng(),
                 address: $scope.address.formatted_address
             });
-
             $scope.address = null;
         });
     };
@@ -49,7 +52,6 @@ app.controller('TransactionAppCtrl', function ($scope, $interval, $location, API
         });
         
         if (transactionOnAlert && transactionOnAlert.id) {
-
             API.checkTransaction({
                 transactionId: transactionOnAlert.id
             }).$promise.then(function (transactionRet) {
@@ -63,9 +65,36 @@ app.controller('TransactionAppCtrl', function ($scope, $interval, $location, API
                 }
             });
         }
-
     };
-
     $interval(checkTransactionsOnAlert, 5000);
+})
 
+app.controller('LoginAppCtrl', function($scope, $rootScope, API) {
+
+    $scope.name = "";
+    $scope.phone = null;
+    $scope.address = null;
+    $scope.loggedIn = false;
+    $scope.userList = null;
+
+    API.getUsers().$promise.then(function(userArray) {
+        $scope.userList = userArray;
+    })
+
+    $scope.loginUser = function(userId) {
+        $rootScope.user = userId;
+        $scope.loggedIn = true;
+    }
+
+    $scope.submitUser = function() {
+        API.createUser({
+            name: $scope.name,
+            phone: $scope.phone,
+            lat: $scope.address.geometry.location.lat(),
+            long: $scope.address.geometry.location.lng(),
+        }).$promise.then(function (userRet) {
+            $rootScope.user = userRet.userId;
+            $scope.loggedIn = true;
+        })
+    }
 })

@@ -14,6 +14,15 @@ app.factory('API', function ($resource) {
         checkTransaction: {
             method: 'GET',
             url: '/checkTransaction/:transactionId'
+        },
+        createUser: {
+            method: 'POST',
+            url: '/createUser'
+        },
+        getUsers: {
+            method: 'GET',
+            url: '/getUsers',
+            isArray: true
         }
     });
 });

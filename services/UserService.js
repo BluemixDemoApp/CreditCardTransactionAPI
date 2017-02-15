@@ -56,6 +56,36 @@ exports.getById = function(payload) {
 	return deferred.promise;
 };
 
+/* Fetch all users */
+exports.getAll = function() {
+
+	var deferred = Q.defer();
+
+	const users = {
+		tag: 'User'
+	};
+
+	if (!ValidationService.fieldsAreValid(users)) {
+		deferred.reject({
+			error: "Invalid Users"
+		});
+		return deferred.promise;
+	}
+
+	cloudantDB.find({
+		selector: users
+	}).then(function(userList) {
+		deferred.resolve(userList.docs.map(function(doc) {
+			doc.id = doc._id;
+			return doc;
+		}));
+	}).catch(function(err) {
+		deferred.reject(err);
+	});
+
+	return deferred.promise;
+};
+
 exports.create = function(payload) {
 
 	var deferred = Q.defer();
